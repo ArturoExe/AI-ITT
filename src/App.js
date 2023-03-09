@@ -1,19 +1,9 @@
-import logo from "./logo.svg";
-import "./App.css";
-import Teachable from "./utils/Teachable";
-import Vanilla from "./components/Vanilla";
+import { Vanilla } from "./components/vanilla"
 
-function App() {
+export default function App () {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-
-        {/* <Teachable /> */}
-        <Vanilla />
-      </header>
+      <Vanilla />
     </div>
-  );
+  )
 }
-
-export default App;
