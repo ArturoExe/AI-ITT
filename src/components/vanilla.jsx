@@ -23,7 +23,7 @@ export const Vanilla = () => {
         </button>
       </div>
 
-      {!stopped && <CameraSkeleton />}
+      {stopped && <CameraSkeleton />}
       <div id="webcam-container" style={{ borderRadius: "30px" }}></div>
       {/* <ul>
         {probabilities?.map(({ className, probability }) => (
@@ -31,7 +31,7 @@ export const Vanilla = () => {
         ))}
       </ul> */}
 
-      {stopped ? (
+      {!stopped ? (
         <h2 className="letter">
           Detecting letter <span>{letter}</span>
         </h2>

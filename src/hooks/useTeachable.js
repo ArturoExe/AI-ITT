@@ -33,7 +33,7 @@ export const useTeachable = (url) => {
   async function init () {
     setStopped(false)
     setModel(await tmImage.load(modelURL, metadataURL))
-    setWebcam(new tmImage.Webcam(200, 200, true)) // width, height, flip
+    setWebcam(new tmImage.Webcam(300, 300, true)) // width, height, flip
   }
 
   const loop = useCallback(async () => {
