@@ -1,6 +1,7 @@
-import useLetter from "../hooks/useLetter"
-import { useTeachable } from "../hooks/useTeachable"
-import CameraSkeleton from "./CameraSkeleton"
+import useLetter from "../hooks/useLetter";
+import { useTeachable } from "../hooks/useTeachable";
+import signOrder from "../utils/song1";
+import CameraSkeleton from "./CameraSkeleton";
 
 export const Vanilla = () => {
   // More API functions here:
@@ -8,9 +9,9 @@ export const Vanilla = () => {
   // the link to your model provided by Teachable Machine export panel
   const { init, stop, probabilities, stopped } = useTeachable(
     "https://teachablemachine.withgoogle.com/models/DoT35G9In/"
-  )
+  );
 
-  const letter = useLetter(probabilities)
+  const letter = useLetter(probabilities);
 
   return (
     <div className="vanilla-container">
@@ -41,5 +42,5 @@ export const Vanilla = () => {
         </h4>
       )}
     </div>
-  )
-}
+  );
+};
