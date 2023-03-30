@@ -1,3 +1,3 @@
-let signOrder = ["A", "C", "C", "A", "C"]
+let signOrder = ["A", "B", "B", "A", "F", "E", "E", "F", "A", "A"];
 
-export default signOrder
+export default signOrder;

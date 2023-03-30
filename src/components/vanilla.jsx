@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import useLetter from "../hooks/useLetter";
+import useResult from "../hooks/useResult";
 import { useTeachable } from "../hooks/useTeachable";
 import signOrder from "../utils/song1";
 import CameraSkeleton from "./CameraSkeleton";
@@ -11,8 +13,11 @@ export const Vanilla = () => {
     "https://teachablemachine.withgoogle.com/models/DoT35G9In/"
   );
 
-  const letter = useLetter(probabilities);
+  const { letter, arr } = useLetter(probabilities);
 
+  const accuracy = useResult(arr);
+
+  console.log(accuracy);
   return (
     <div className="vanilla-container">
       <div>
@@ -33,9 +38,18 @@ export const Vanilla = () => {
       </ul> */}
 
       {!stopped ? (
-        <h2 className="letter">
-          Detecting letter <span>{letter}</span>
-        </h2>
+        <>
+          <h2 className="letter">
+            Detecting letter <span>{letter}</span>
+          </h2>
+
+          {arr.length >= 10 && (
+            <>
+              <p>{JSON.stringify(arr)}</p>
+              <p>{JSON.stringify(signOrder)}</p>
+            </>
+          )}
+        </>
       ) : (
         <h4 style={{ fontWeight: "lighter" }}>
           Let us start detecting some handsigns

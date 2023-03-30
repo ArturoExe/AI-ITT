@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 export default function useLetter(probabilities) {
   const [letter, setLetter] = useState();
   const [arr, setArr] = useState([]);
-  let aux = [];
   const letterRef = useRef();
 
   //Sets the ref of the letter every time it detects it
@@ -37,21 +36,21 @@ export default function useLetter(probabilities) {
     const intervalId = setInterval(() => {
       console.log(letterRef.current);
 
-      if (arr.length <= 10) {
+      if (arr.length < 10) {
         setArr((prevLetter) => [...prevLetter, letterRef.current]);
       } else {
-        console.log("END");
+        console.log("END on array:", arr.length);
       }
     }, 5000);
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [arr]);
 
   useEffect(() => {
     console.log(arr);
   }, [arr]);
 
   //must return the array to alter the UI
-  return letter;
+  return { letter, arr };
 }
