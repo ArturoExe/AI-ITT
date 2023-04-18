@@ -1,3 +1,3 @@
 export * from './letters.jsx'
 
-export * from './vanilla.jsx'
+export * from './camera.jsx'

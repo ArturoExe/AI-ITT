@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-import { Vanilla } from "./components/vanilla";
+import { GameScreen } from './pages'
 
-export default function App() {
+export default function App () {
   return (
-    <div className="App">
-      <Vanilla />
-    </div>
-  );
+    <main>
+      <GameScreen />
+    </main>
+  )
 }

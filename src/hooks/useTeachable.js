@@ -1,61 +1,66 @@
-import * as tmImage from "@teachablemachine/image"
-import { useCallback, useEffect, useRef, useState } from 'react'
+import * as tmImage from '@teachablemachine/image'
+import { useEffect, useRef, useState } from 'react'
 
 export const useTeachable = (url) => {
+  const [data, setData] = useState({
+    model: null,
+    webcam: null
+  })
   const [probabilities, setProbabilities] = useState([])
-  const [model, setModel] = useState(null)
-  const [webcam, setWebcam] = useState(null)
-  const [stopped, setStopped] = useState(false)
-  const modelURL = url + "model.json"
-  const metadataURL = url + "metadata.json"
+  const [stopped, setStopped] = useState(true)
+  const urls = {
+    modelURL: url + 'model.json',
+    metadataURL: url + 'metadata.json'
+  }
   const animation = useRef(null)
-  const stopAnimation = useRef(false)
 
   useEffect(() => {
-    webcam &&
-      setupCamera()
+    data.webcam && setupCamera()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [webcam])
+  }, [data])
 
   useEffect(() => {
-    console.log("stopped", stopped)
+    console.log('stopped', stopped)
     !stopped && setProbabilities([])
   }, [stopped])
 
   async function setupCamera () {
+    const { webcam } = data
     await webcam.setup()
     await webcam.play()
-    stopAnimation.current = false
     animation.current = requestAnimationFrame(loop)
-    document.getElementById("webcam-container").appendChild(webcam.canvas)
+    document.getElementById('webcam-container').appendChild(webcam.canvas)
   }
 
   async function init () {
     setStopped(false)
-    setModel(await tmImage.load(modelURL, metadataURL))
-    setWebcam(new tmImage.Webcam(300, 300, true)) // width, height, flip
+    const { modelURL, metadataURL } = urls
+    setData({
+      model: await tmImage.load(modelURL, metadataURL),
+      webcam: new tmImage.Webcam(300, 300, true)
+    })
   }
 
-  const loop = useCallback(async () => {
+  const loop = async _ => {
+    const { model, webcam } = data
     webcam.update()
-    const prediction = await model.predict(webcam.canvas)
-    setProbabilities(prediction)
-    cancelAnimationFrame(animation.current)
-    if (!stopAnimation.current)
-      animation.current = requestAnimationFrame(loop)
-  }, [webcam, model])
+    setProbabilities(await model.predict(webcam.canvas))
+    animation.current = requestAnimationFrame(loop)
+  }
 
   async function stop () {
-    await webcam.stop()
+    const { webcam } = data
+    if (animation.current) cancelAnimationFrame(animation.current)
+    if (webcam) {
+      await webcam.stop()
+      webcam.canvas?.remove()
+    }
     setStopped(true)
-    stopAnimation.current = true
-    document.getElementById("webcam-container")?.removeChild(webcam.canvas)
   }
 
   return {
     init,
     stop,
-    webcam,
     stopped,
     probabilities
   }

@@ -1,56 +1,41 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react'
 
-export default function useLetter(probabilities) {
-  const [letter, setLetter] = useState();
-  const [arr, setArr] = useState([]);
-  const letterRef = useRef();
+export function useLetter (probabilities, stopped) {
+  const [letter, setLetter] = useState()
+  const [arr, setArr] = useState([])
+  const letterRef = useRef()
 
-  //Sets the ref of the letter every time it detects it
+  // Sets the ref of the letter every time it detects it
   // an sets the letter ref
   useEffect(() => {
-    if (probabilities[1]?.probability > 0.55) {
-      letterRef.current = "A";
-      setLetter("A");
+    if (!stopped) {
+      const detectedLetter = probabilities.find((p) => p.probability > 0.55)
+      if (detectedLetter) {
+        letterRef.current = detectedLetter.className
+        setLetter(detectedLetter.className)
+      }
     }
-    if (probabilities[2]?.probability > 0.55) {
-      letterRef.current = "B";
-      setLetter("B");
-    }
-    if (probabilities[0]?.probability > 0.55) {
-      letterRef.current = "C";
-      setLetter("C");
-    }
-    if (probabilities[3]?.probability > 0.55) {
-      letterRef.current = "E";
-      setLetter("E");
-    }
-    if (probabilities[4]?.probability > 0.55) {
-      letterRef.current = "F";
-      setLetter("F");
-    }
-  }, [probabilities]);
+  }, [probabilities, stopped])
 
   // Adds the letter to the array every 5 seconds using the ref of the
   // main detection
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      console.log(letterRef.current);
-
-      if (arr.length < 10) {
-        setArr((prevLetter) => [...prevLetter, letterRef.current]);
-      } else {
-        console.log("END on array:", arr.length);
-      }
-    }, 5000);
+    let intervalId
+    if (!stopped) {
+      intervalId = setInterval(() => {
+        if (arr.length < 10) {
+          setArr(prevLetter => [...prevLetter, letterRef.current])
+        } else {
+          console.log('END on array:', arr.length)
+          clearInterval(intervalId)
+        }
+      }, 5000)
+    }
     return () => {
-      clearInterval(intervalId);
-    };
-  }, [arr]);
+      if (intervalId) clearInterval(intervalId)
+    }
+  }, [arr, stopped])
 
-  useEffect(() => {
-    console.log(arr);
-  }, [arr]);
-
-  //must return the array to alter the UI
-  return { letter, arr };
+  // must return the array to alter the UI
+  return { letter, arr }
 }

@@ -1,26 +1,24 @@
-import signOrder from "../utils/song1";
-import { useEffect, useState } from "react";
+import { song1 as signOrder } from '../songs'
+import { useEffect, useState } from 'react'
 
-export default async function (arr) {
-  const [accuracy, setAccuracy] = useState(0);
+export function useResult (arr) {
+  const [accuracy, setAccuracy] = useState(0)
 
   useEffect(() => {
     // Compare two arrays
     if (arr.length !== signOrder.length) {
-      setAccuracy(0);
+      setAccuracy(0)
     } else {
-      let count = 0;
+      let count = 0
       for (let i = 0; i < signOrder.length; i++) {
-        if (arr[i] === signOrder[i]) {
-          count++;
-        }
+        if (arr[i] === signOrder[i]) count++
       }
-      setAccuracy((count / arr.length) * 100);
+      setAccuracy((count / arr.length) * 100)
     }
-  }, [arr]);
+  }, [arr])
 
   if (accuracy === null) {
-    return "Calculando...";
+    return 'Calculando...'
   }
-  return accuracy;
+  return accuracy
 }
