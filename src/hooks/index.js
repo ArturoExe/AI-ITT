@@ -7,3 +7,5 @@ export * from './useLetter'
 export * from './useResult'
 
 export * from './useTimer'
+
+export * from './useRefState'

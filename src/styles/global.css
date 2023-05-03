@@ -40,3 +40,11 @@
   background-color: #e93838de;
   border-color: #e93838ea;
 }
+
+.btn:disabled,
+.btn:disabled:hover {
+  background-color: lightslategray;
+  border-color: lightslategray;
+  color: #252e3e;
+  cursor: not-allowed;
+}

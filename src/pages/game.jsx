@@ -1,51 +1,33 @@
 import {
   useTeachable,
-  useLetter,
-  useResult
 } from '../hooks'
-import { song1 } from '../songs'
-import { CameraSkeleton } from '../components'
+import { CameraSkeleton, Clock, Score } from '../components'
 import '../styles/game.css'
+import { useContext } from 'react'
+import { GameContext } from '../context'
 
 export const GameScreen = () => {
-  const { init, stop, probabilities, stopped } = useTeachable(
+  const { init, stop } = useTeachable(
     'https://teachablemachine.withgoogle.com/models/DoT35G9In/'
   )
-
-  const { letter, arr } = useLetter(probabilities, stopped)
-
-  const accuracy = useResult(arr)
+  const { playing } = useContext(GameContext)
 
   return (
-    <section className="vanilla-container">
+    <section className="game-container">
       <div>
-        <button onClick={init} className="btn btn-primary">
+        <button disabled={playing} onClick={init} className="btn btn-primary">
           Start
         </button>
-        <button onClick={stop} className="btn btn-secondary">
+        <button disabled={!playing} onClick={stop} className="btn btn-secondary">
           Stop
         </button>
       </div>
 
-      {stopped && <CameraSkeleton />}
+      <Clock />
+
+      {!playing && <CameraSkeleton />}
       <div id="webcam-container" />
-      {
-        !stopped &&
-        <div className='results-area'>
-          <p>
-            <strong>Letter detected: </strong>
-            {letter}
-          </p>
-          <p>
-            <strong>Letter to detect: </strong>
-            {song1[arr.lenght ?? 0]}
-          </p>
-          <p>
-            <strong>Accuracy: </strong>
-            {accuracy}
-          </p>
-        </div>
-      }
+      <Score />
     </section>
   )
 }

@@ -1,13 +1,13 @@
 import * as tmImage from '@teachablemachine/image'
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
+import { GameContext } from '../context'
 
 export const useTeachable = (url) => {
+  const { setPlaying, reset, setProbabilities, playingRef } = useContext(GameContext)
   const [data, setData] = useState({
     model: null,
     webcam: null
   })
-  const [probabilities, setProbabilities] = useState([])
-  const [stopped, setStopped] = useState(true)
   const urls = {
     modelURL: url + 'model.json',
     metadataURL: url + 'metadata.json'
@@ -19,21 +19,16 @@ export const useTeachable = (url) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
-  useEffect(() => {
-    console.log('stopped', stopped)
-    !stopped && setProbabilities([])
-  }, [stopped])
-
   async function setupCamera () {
     const { webcam } = data
     await webcam.setup()
     await webcam.play()
-    animation.current = requestAnimationFrame(loop)
+    setPlaying(true)
+    animation.current = window.requestAnimationFrame(loop)
     document.getElementById('webcam-container').appendChild(webcam.canvas)
   }
 
   async function init () {
-    setStopped(false)
     const { modelURL, metadataURL } = urls
     setData({
       model: await tmImage.load(modelURL, metadataURL),
@@ -45,23 +40,26 @@ export const useTeachable = (url) => {
     const { model, webcam } = data
     webcam.update()
     setProbabilities(await model.predict(webcam.canvas))
-    animation.current = requestAnimationFrame(loop)
+    if (!playingRef) animation.current = window.requestAnimationFrame(loop)
+    else {
+      window.cancelAnimationFrame(animation.current)
+      animation.current = null
+    }
   }
 
   async function stop () {
     const { webcam } = data
-    if (animation.current) cancelAnimationFrame(animation.current)
+    if (animation.current) window.cancelAnimationFrame(animation.current)
     if (webcam) {
       await webcam.stop()
       webcam.canvas?.remove()
     }
-    setStopped(true)
+    setPlaying(false)
+    reset()
   }
 
   return {
     init,
-    stop,
-    stopped,
-    probabilities
+    stop
   }
 }

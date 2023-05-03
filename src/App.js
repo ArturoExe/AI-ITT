@@ -1,9 +1,10 @@
 import { GameScreen } from './pages'
+import { GameProvider } from './context'
 
 export default function App () {
   return (
-    <main>
+    <GameProvider>
       <GameScreen />
-    </main>
+    </GameProvider>
   )
 }
