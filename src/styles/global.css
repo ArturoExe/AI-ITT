@@ -4,7 +4,8 @@
   margin: 0;
   background-color: #252e3e;
   color: aliceblue;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 .btn {
@@ -24,6 +25,21 @@
 
 .btn.btn-secondary {
   background-color: #e93838;
+}
+
+.btn.btn-easy {
+  background-color: #64bb5c;
+  width: 9rem;
+}
+
+.btn.btn-intermediate {
+  background-color: #dbc33b;
+  width: 9rem;
+}
+
+.btn.btn-advance {
+  background-color: #e93838;
+  width: 9rem;
 }
 
 .btn:hover {

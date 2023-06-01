@@ -1,40 +1,58 @@
 .results-area {
-    text-align: center;
-    font-size: 1.25rem;
-    margin-block: 1rem;
+  text-align: center;
+  font-size: 1.25rem;
+  margin-block: 1rem;
 }
 
 .game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 #webcam-container,
 canvas {
-    border-radius: 30px;
+  border-radius: 30px;
 }
 
 .song-container {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .letter {
-    width: 2ch;
-    aspect-ratio: 1;
-    padding: 0.25em;
-    background-color: lightslategray;
+  width: 2ch;
+  aspect-ratio: 1;
+  padding: 0.25em;
+  background-color: lightslategray;
 }
 
 .letter.correct {
-    background-color: green;
+  background-color: green;
 }
 
 .letter.incorrect {
-    background-color: red;
+  background-color: red;
 }
 
 .letter.current {
-    background-color: blue;
+  background-color: blue;
+}
+
+.image-container {
+  height: 40rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.image-container img {
+  height: 40%;
+  width: auto;
+}
+
+.dif-name {
+  font-weight: 700;
+  font-size: large;
 }
